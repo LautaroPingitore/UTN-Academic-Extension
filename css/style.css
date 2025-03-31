@@ -1,15 +1,14 @@
 /* CSS Document */
+html {
+    height: 100%;
+    width: 100%;
+}
+
 th, td, caption {
     border: 1px solid #333;
     font-family: 'Courier New', Courier, monospace;
     border-collapse: separate;
     padding: 0.5rem;
-}
-
-caption {
-    height: 65px;
-    margin-bottom: 5px;
-    font-size: xx-large;
 }
 
 .titulo {
@@ -23,13 +22,31 @@ caption {
     font-style: normal;
 }
 
+.menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    display: none;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+.opcion {
+    padding: "5px";
+    cursor: pointer;
+    border-bottom: "1px solid #ddd";
+    background-color: "#f9f9f9";
+    font-size: larger;
+    margin-bottom: 5px;
+}
+
 thead {
-    font-size: x-large;
+    font-size: medium;
     font-weight: bolder;
 }
 
 tbody {
-    font-size: large;
+    font-size: smaller;
     text-align: center;
     font-weight: 600;
     background-color: #99628A;
@@ -50,4 +67,20 @@ tbody {
 
 .aprobada {
     background-color: #B3D9A3;
+}
+
+p {
+    font-size: smaller;
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-top: 5px;
+    padding: 0;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

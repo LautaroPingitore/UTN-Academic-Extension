@@ -8,7 +8,13 @@ const materias = [
     "F1", "SSOO", "CD", "TpA",
     "IngSoc", "PyE", "RD", "CdD"
 ];
-//localStorage.clear();
+
+document.addEventListener("keydown",function(event) {
+    if(event.key == "Backspace") {
+        localStorage.clear();
+    }
+}) 
+
 const estados = ["sinCursar", "cursando", "regularizada", "aprobada"];
 
 let sinCursar = JSON.parse(localStorage.getItem("sinCursar")) || setearEstado(materias, estados[0]);
@@ -38,6 +44,36 @@ function modificarTablas(materia, estado, nombreEstado) {
     localStorage.setItem(nombreEstado, JSON.stringify(estado));
 }
 
+function manejarCambioEstados(celda, estadoNuevo, estados) {
+    if(estadoNuevo != "sinCursar" ) {
+        if(puedeCursarla(celda.id)) {
+            celda.classList.remove(...estados);
+            celda.classList.add(estadoNuevo);
+            modificarTablas(celda.id, estados, estadoNuevo);
+        }
+        // else te muestra un mensaje diciendo que te faltan x materias
+    } else {
+        celda.classList.remove(...estados);
+        celda.classList.add(estadoNuevo);
+        modificarTablas(celda.id, estados, estadoNuevo);
+    }
+}
+
+function puedeCursarla(materia) {
+    let bloqueMateria = document.getElementById(materia);
+    console.log(bloqueMateria);
+
+    const spansRegu = bloqueMateria.querySelectorAll("p span[id$='.regu']"); // Obtiene todos los spans que terminan con .regu
+    const reguNecesarias = Array.from(spansRegu).map(span => span.textContent); // Mapea los spans a un array de strings
+
+    const spansApro = bloqueMateria.querySelectorAll("p span[id$='.apro']");
+    const aproNecesarias = Array.from(spansApro).map(span => span.textContent);
+
+    console.log(reguNecesarias, aproNecesarias);
+
+    return true;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     // Ocultar la tabla temporalmente
     document.querySelector('table').style.visibility = 'hidden';
@@ -62,31 +98,20 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Resto de tu código del menú contextual...
         const menu = document.createElement("div");
-        menu.id = "context-menu";
-        menu.style.position = "absolute";
-        menu.style.background = "#fff";
-        menu.style.border = "1px solid #ccc";
-        menu.style.padding = "5px";
-        menu.style.display = "none";
-        menu.style.boxShadow = "2px 2px 5px rgba(0,0,0,0.2)";
+        menu.classList.add("menu")
         document.body.appendChild(menu);
 
         estados.forEach((estado, i) => {
             let opcion = document.createElement("div");
             opcion.textContent = estado.charAt(0).toUpperCase() + estado.slice(1);
-            opcion.style.padding = "5px";
-            opcion.style.cursor = "pointer";
-            opcion.style.borderBottom = "1px solid #ddd";
-            opcion.style.backgroundColor = "#f9f9f9";
+            opcion.classList.add("opcion");
 
             opcion.addEventListener("mouseover", () => (opcion.style.backgroundColor = "#ddd"));
             opcion.addEventListener("mouseout", () => (opcion.style.backgroundColor = "#f9f9f9"));
 
             opcion.addEventListener("click", function () {
                 if (menu.targetCell) {
-                    menu.targetCell.classList.remove(...estados);
-                    menu.targetCell.classList.add(estados[i]);
-                    modificarTablas(menu.targetCell.id, listaEstados[i], estados[i]);
+                    manejarCambioEstados(menu.targetCell, estados[i], listaEstados[i]);
                 }
                 menu.style.display = "none";
             });
