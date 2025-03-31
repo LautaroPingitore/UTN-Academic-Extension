@@ -1,0 +1,53 @@
+/* CSS Document */
+th, td, caption {
+    border: 1px solid #333;
+    font-family: 'Courier New', Courier, monospace;
+    border-collapse: separate;
+    padding: 0.5rem;
+}
+
+caption {
+    height: 65px;
+    margin-bottom: 5px;
+    font-size: xx-large;
+}
+
+.titulo {
+    background-color: #64144F;
+    color: white;
+    text-align: center;
+    font-weight: bolder;
+
+    font-family: "Boldonse", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+thead {
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+tbody {
+    font-size: large;
+    text-align: center;
+    font-weight: 600;
+    background-color: #99628A;
+    color: white;
+}
+
+.sinCursar {
+    background-color: #99628A;
+}
+
+.cursando {
+    background-color: #A7C7E7;
+}
+
+.regularizada {
+    background-color: #E8C78A;
+}
+
+.aprobada {
+    background-color: #B3D9A3;
+}
