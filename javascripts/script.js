@@ -33,7 +33,6 @@ function modificarTablas(materia, estado, nombreEstado) {
     for(let i=0; i < listaEstados.length; i++){
         if(listaEstados[i].includes(materia)){ // Verificar si la materia está en el estado actual
             let listaVieja = listaEstados[i];
-            console.log(typeof listaVieja);
             listaEstados[i].splice(listaEstados[i].indexOf(materia), 1);
             localStorage.setItem(estados[i], JSON.stringify(listaEstados[i])); // Actualiza en el Local Storage el estado anterior
             break;
@@ -46,32 +45,82 @@ function modificarTablas(materia, estado, nombreEstado) {
 
 function manejarCambioEstados(celda, estadoNuevo, estados) {
     if(estadoNuevo != "sinCursar" ) {
-        if(puedeCursarla(celda.id)) {
+        if(puedeCursarla(celda.id, estadoNuevo)) {
             celda.classList.remove(...estados);
             celda.classList.add(estadoNuevo);
+            modificarCorrelativas(celda.id, estadoNuevo, true);
             modificarTablas(celda.id, estados, estadoNuevo);
         }
         // else te muestra un mensaje diciendo que te faltan x materias
     } else {
+        console.log("sinCursar")
         celda.classList.remove(...estados);
         celda.classList.add(estadoNuevo);
+        modificarCorrelativas(celda.id, estadoNuevo, false);
         modificarTablas(celda.id, estados, estadoNuevo);
     }
 }
 
-function puedeCursarla(materia) {
+function modificarCorrelativas(nombreMateria, estadoNuevo, aplicarTachado) {
+    const nombreClase = nombreMateria + "\." + retornarSufijoClass(estadoNuevo);
+
+    const clases = document.getElementsByClassName(nombreClase);
+
+    Array.from(clases).forEach(clase => {
+        if(aplicarTachado) {
+            clase.style.textDecoration = "line-through solid black";
+            clase.style.textDecorationThickness = '2px';
+        } else {
+            clase.style.textDecoration = "none";
+        }
+    })
+}
+
+function retornarSufijoClass(estadoNuevo) {
+    if(estadoNuevo == "regularizada") {
+        return "regu";
+    } else if(estadoNuevo == "aprobada") {
+        return "apro";
+    }
+    return "";
+}
+
+function puedeCursarla(materia, estadoNuevo) {
     let bloqueMateria = document.getElementById(materia);
     console.log(bloqueMateria);
 
-    const spansRegu = bloqueMateria.querySelectorAll("p span[id$='.regu']"); // Obtiene todos los spans que terminan con .regu
+    const spansRegu = bloqueMateria.querySelectorAll("p span[class$='.regu']"); // Obtiene todos los spans que terminan con .regu
     const reguNecesarias = Array.from(spansRegu).map(span => span.textContent); // Mapea los spans a un array de strings
+    const cantRegularizadas = reguNecesarias.length;
 
-    const spansApro = bloqueMateria.querySelectorAll("p span[id$='.apro']");
+    const spansApro = bloqueMateria.querySelectorAll("p span[class$='.apro']");
     const aproNecesarias = Array.from(spansApro).map(span => span.textContent);
+    const cantAprobadas = aproNecesarias.length;
 
-    console.log(reguNecesarias, aproNecesarias);
+    if(cantRegularizadas == 0 && cantAprobadas == 0) {
+        return true;
+    }
+    if(cantRegularizadas > 0) {
+        if(!estanAprobadasORegularizadas(reguNecesarias)) {
+            console.log("No cumplis los requisitos de regularizacion");
+            return false;
+        }
+        console.log("Cumplis requisitos regularizacion");
+    }
+    if(cantAprobadas > 0) {
+        if(!estanAprobadasORegularizadas(aproNecesarias)) {
+            console.log("No cumplis los requisitos de aprobacion");
+            return false;
+        }
+        console.log("La podes cursar");
+    }
 
     return true;
+}
+
+function estanAprobadasORegularizadas(lista) {
+    return lista.every(materia => 
+        aprobadas.includes(materia) || regularizadas.includes(materia))
 }
 
 document.addEventListener("DOMContentLoaded", function () {
