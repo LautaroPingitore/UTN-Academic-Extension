@@ -46,48 +46,48 @@ function modificarTablas(materia, estado, nombreEstado) {
 function manejarCambioEstados(celda, estadoNuevo, estados) {
     if(estadoNuevo != "sinCursar" ) {
         if(puedeCursarla(celda.id, estadoNuevo)) {
-            celda.classList.remove(...estados);
-            celda.classList.add(estadoNuevo);
-            modificarCorrelativas(celda.id, estadoNuevo, true);
+            celda.className = estadoNuevo;
+            modificarCorrelativas(celda.id, estadoNuevo);
             modificarTablas(celda.id, estados, estadoNuevo);
         }
         // else te muestra un mensaje diciendo que te faltan x materias
     } else {
-        console.log("sinCursar")
-        celda.classList.remove(...estados);
-        celda.classList.add(estadoNuevo);
-        modificarCorrelativas(celda.id, estadoNuevo, false);
+        celda.className = estadoNuevo;
+        modificarCorrelativas(celda.id, estadoNuevo);
         modificarTablas(celda.id, estados, estadoNuevo);
     }
 }
 
-function modificarCorrelativas(nombreMateria, estadoNuevo, aplicarTachado) {
-    const nombreClase = nombreMateria + "\." + retornarSufijoClass(estadoNuevo);
+function modificarCorrelativas(nombreMateria, estadoNuevo) {
+    const nombreClaseRegu = nombreMateria + "\.regu";
+    let clases = Array.from(document.getElementsByClassName(nombreClaseRegu));
+    const nombreClaseApro = nombreMateria + "\.apro";
+    const clasesApro = Array.from(document.getElementsByClassName(nombreClaseApro));
+    
+    if(estadoNuevo == "aprobada" || estadoNuevo == "regularizada") {
 
-    const clases = document.getElementsByClassName(nombreClase);
-
-    Array.from(clases).forEach(clase => {
-        if(aplicarTachado) {
-            clase.style.textDecoration = "line-through solid black";
-            clase.style.textDecorationThickness = '2px';
-        } else {
-            clase.style.textDecoration = "none";
+        if(estadoNuevo == "aprobada") {
+            clases = clases.concat(clasesApro);
+            console.log(clases);
         }
-    })
-}
 
-function retornarSufijoClass(estadoNuevo) {
-    if(estadoNuevo == "regularizada") {
-        return "regu";
-    } else if(estadoNuevo == "aprobada") {
-        return "apro";
+        console.log(clases);
+        clases.forEach(clase => {
+            clase.style.textDecoration = "line-through solid black";
+            clase.style.textDecorationThickness = "2px";
+        })
+
+    } else {
+        clases = clases.concat(clasesApro);
+        clases.forEach(clase => {
+            clase.style.textDecoration = "none";
+        })
     }
-    return "";
+
 }
 
 function puedeCursarla(materia, estadoNuevo) {
     let bloqueMateria = document.getElementById(materia);
-    console.log(bloqueMateria);
 
     const spansRegu = bloqueMateria.querySelectorAll("p span[class$='.regu']"); // Obtiene todos los spans que terminan con .regu
     const reguNecesarias = Array.from(spansRegu).map(span => span.textContent); // Mapea los spans a un array de strings

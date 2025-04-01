@@ -84,3 +84,7 @@ hr {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+abbr {
+    text-decoration: none;
+}
