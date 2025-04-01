@@ -29,15 +29,19 @@ th, td, caption {
     padding: 5px;
     display: none;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    width: 150px; /* Ancho fijo */
+    z-index: 1000; /* Asegura que aparezca sobre otros elementos */
 }
 
 .opcion {
-    padding: "5px";
+    padding: 8px 10px;
     cursor: pointer;
-    border-bottom: "1px solid #ddd";
-    background-color: "#f9f9f9";
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
     font-size: larger;
     margin-bottom: 5px;
+    height: 30px; /* Altura fija para cada opción */
+    box-sizing: border-box;
 }
 
 thead {

@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Ocultar la tabla temporalmente
     document.querySelector('table').style.visibility = 'hidden';
     
-    // Pequeña pausa antes de aplicar los colores (100ms es apenas perceptible)
+    // Pequeña pausa antes de aplicar los colores
     setTimeout(() => {
         // Aplicar clases de estado
         document.querySelectorAll("td").forEach((materia) => {
@@ -145,19 +145,22 @@ document.addEventListener("DOMContentLoaded", function () {
         // Mostrar la tabla después de aplicar los colores
         document.querySelector('table').style.visibility = 'visible';
         
-        // Resto de tu código del menú contextual...
+        // Crear el menú contextual
         const menu = document.createElement("div");
-        menu.classList.add("menu")
+        menu.classList.add("menu");
         document.body.appendChild(menu);
 
+        // Añadir opciones al menú
         estados.forEach((estado, i) => {
             let opcion = document.createElement("div");
             opcion.textContent = estado.charAt(0).toUpperCase() + estado.slice(1);
             opcion.classList.add("opcion");
 
+            // Efectos hover
             opcion.addEventListener("mouseover", () => (opcion.style.backgroundColor = "#ddd"));
             opcion.addEventListener("mouseout", () => (opcion.style.backgroundColor = "#f9f9f9"));
 
+            // Manejar clic en opción
             opcion.addEventListener("click", function () {
                 if (menu.targetCell) {
                     manejarCambioEstados(menu.targetCell, estados[i], listaEstados[i]);
@@ -168,16 +171,43 @@ document.addEventListener("DOMContentLoaded", function () {
             menu.appendChild(opcion);
         });
 
+        // Manejar clic derecho en celdas
         document.querySelectorAll("td").forEach(materia => {
             materia.addEventListener("contextmenu", function (event) {
+                // Verificar si es celda no deseada
+                if (materia.id === "vacia") {
+                    return;
+                }
+                
                 event.preventDefault();
-                menu.style.left = `${event.pageX}px`;
-                menu.style.top = `${event.pageY}px`;
+                
+                // Dimensiones del menú
+                const menuWidth = menu.offsetWidth || 150; // Ancho del menú
+                const menuHeight = menu.offsetHeight || (estados.length * 40); // Alto del menú
+                
+                // Posición del cursor
+                let left = event.clientX;
+                let top = event.clientY;
+                
+                // Ajustar si se sale por la derecha
+                if (left + menuWidth > window.innerWidth) {
+                    left = window.innerWidth - menuWidth - 5;
+                }
+                
+                // Ajustar si se sale por abajo
+                if (top + menuHeight > window.innerHeight) {
+                    top = window.innerHeight - menuHeight - 5;
+                }
+                
+                // Posicionar el menú
+                menu.style.left = `${left}px`;
+                menu.style.top = `${top}px`;
                 menu.style.display = "block";
                 menu.targetCell = materia;
             });
         });
 
+        // Ocultar menú al hacer clic fuera
         document.addEventListener("click", function (event) {
             if (!menu.contains(event.target)) {
                 menu.style.display = "none";
