@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Materias Sistemas",
+    "version": "1.0",
+    "description": "Abre index.html al hacer clic en la extensión",
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    },
+    "action": {
+        "default_title": "Abrir en nueva pestaña"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "permissions": ["tabs"]
+}

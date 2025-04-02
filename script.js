@@ -13,20 +13,20 @@ document.addEventListener("keydown",function(event) {
     if(event.key == "Backspace") {
         localStorage.clear();
     }
-}) 
+})
 
 const estados = ["sinCursar", "cursando", "regularizada", "aprobada"];
 
-let sinCursar = JSON.parse(localStorage.getItem("sinCursar")) || setearEstado(materias, estados[0]);
-let cursando = JSON.parse(localStorage.getItem("cursando")) || setearEstado([], estados[1]);
-let regularizadas = JSON.parse(localStorage.getItem("regularizada")) || setearEstado([], estados[2]);
-let aprobadas = JSON.parse(localStorage.getItem("aprobada")) || setearEstado([], estados[3]);
+let sinCursar = JSON.parse(localStorage.getItem("sinCursar")) || setearLista(materias, estados[0]);
+let cursando = JSON.parse(localStorage.getItem("cursando")) || setearLista([], estados[1]);
+let regularizadas = JSON.parse(localStorage.getItem("regularizada")) || setearLista([], estados[2]);
+let aprobadas = JSON.parse(localStorage.getItem("aprobada")) || setearLista([], estados[3]);
 let contadorApro = JSON.parse(localStorage.getItem("contadorApro")) || setearContador("contadorApro");
 let contadorRegu = JSON.parse(localStorage.getItem("contadorRegu")) || setearContador("contadorRegu");
 
 const listaEstados = [sinCursar, cursando, regularizadas, aprobadas]
 
-function setearEstado(lista, nombre) {
+function setearLista(lista, nombre) {
     localStorage.setItem(nombre, JSON.stringify(lista));
     return lista;
 }
@@ -75,10 +75,8 @@ function modificarCorrelativas(nombreMateria, estadoNuevo) {
 
         if(estadoNuevo == "aprobada") {
             clases = clases.concat(clasesApro);
-            console.log(clases);
         }
 
-        console.log(clases);
         clases.forEach(clase => {
             clase.style.textDecoration = "line-through solid black";
             clase.style.textDecorationThickness = "2px";
@@ -179,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (aprobadas.includes(materia.id)) {
                 materia.classList.add("aprobada");
             }
+            modificarCorrelativas(materia.id, materia.classList);
         });
         
         // Mostrar la tabla después de aplicar los colores
