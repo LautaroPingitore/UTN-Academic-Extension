@@ -92,3 +92,14 @@ hr {
 abbr {
     text-decoration: none;
 }
+
+h2 {
+    font-size: large;
+    margin-bottom: 0;
+    font-weight: bolder;
+}
+
+#contadorApro, #contadorRegu {
+    font-size: large;
+    margin-top: 0;
+}

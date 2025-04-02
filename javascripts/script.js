@@ -21,12 +21,19 @@ let sinCursar = JSON.parse(localStorage.getItem("sinCursar")) || setearEstado(ma
 let cursando = JSON.parse(localStorage.getItem("cursando")) || setearEstado([], estados[1]);
 let regularizadas = JSON.parse(localStorage.getItem("regularizada")) || setearEstado([], estados[2]);
 let aprobadas = JSON.parse(localStorage.getItem("aprobada")) || setearEstado([], estados[3]);
+let contadorApro = JSON.parse(localStorage.getItem("contadorApro")) || setearContador("contadorApro");
+let contadorRegu = JSON.parse(localStorage.getItem("contadorRegu")) || setearContador("contadorRegu");
 
 const listaEstados = [sinCursar, cursando, regularizadas, aprobadas]
 
 function setearEstado(lista, nombre) {
     localStorage.setItem(nombre, JSON.stringify(lista));
     return lista;
+}
+
+function setearContador(nombre) {
+    localStorage.setItem(nombre, 0);
+    return 0;
 }
 
 function modificarTablas(materia, estado, nombreEstado) {
@@ -44,13 +51,13 @@ function modificarTablas(materia, estado, nombreEstado) {
 }
 
 function manejarCambioEstados(celda, estadoNuevo, estados) {
+    modificarContador(celda, estadoNuevo);
     if(estadoNuevo != "sinCursar" ) {
         if(puedeCursarla(celda.id, estadoNuevo)) {
             celda.className = estadoNuevo;
             modificarCorrelativas(celda.id, estadoNuevo);
             modificarTablas(celda.id, estados, estadoNuevo);
         }
-        // else te muestra un mensaje diciendo que te faltan x materias
     } else {
         celda.className = estadoNuevo;
         modificarCorrelativas(celda.id, estadoNuevo);
@@ -123,6 +130,38 @@ function estanAprobadasORegularizadas(lista) {
         aprobadas.includes(materia) || regularizadas.includes(materia))
 }
 
+function modificarContador(celda, estadoNuevo) {
+    if(celda.className == estadoNuevo) {
+        return;
+    }
+    if(celda.className == "aprobada") {
+        contadorApro -= 1;
+        if(estadoNuevo != "regularizada") {
+            contadorRegu -= 1;
+        }
+    } else if(celda.className == "regularizada") {
+        if(estadoNuevo == "aprobada") {
+            contadorApro += 1;
+        } else {
+            contadorRegu -= 1;
+        }
+    } else if(estadoNuevo == "regularizada") {
+        contadorRegu += 1;
+    } else if(estadoNuevo == "aprobada") {
+        contadorApro += 1;
+        contadorRegu += 1;  
+    }
+
+    localStorage.setItem("contadorRegu", contadorRegu);
+    const contadorReguEl = document.getElementById("contadorRegu");
+    contadorReguEl.textContent = contadorRegu + " / 38";
+
+    const contadorAproEl = document.getElementById("contadorApro");
+    localStorage.setItem("contadorApro", contadorApro);
+    contadorAproEl.textContent = contadorApro + " / 38";
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     // Ocultar la tabla temporalmente
     document.querySelector('table').style.visibility = 'hidden';
@@ -144,7 +183,13 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Mostrar la tabla después de aplicar los colores
         document.querySelector('table').style.visibility = 'visible';
+
+        const contadorAproEl = document.getElementById("contadorApro");
+        contadorAproEl.textContent = contadorApro + " / 38";
         
+        const contadorReguEl = document.getElementById("contadorRegu");
+        contadorReguEl.textContent = contadorRegu + " / 38";
+
         // Crear el menú contextual
         const menu = document.createElement("div");
         menu.classList.add("menu");
