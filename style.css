@@ -1,110 +1,261 @@
 /* CSS Document */
 body {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 table {
-    width: 100%;
-    height: 100vh;
+  width: 100%;
+  height: 100vh;
 }
 
-th, td, caption {
-    border: 1px solid #333;
-    font-family: 'Courier New', Courier, monospace;
-    border-collapse: separate;
-    padding: 0.5rem;
+th,
+td,
+caption {
+  border: 1px solid #333;
+  font-family: "Courier New", Courier, monospace;
+  border-collapse: separate;
+  padding: 0.5rem;
 }
 
 .titulo {
-    background-color: #64144F;
-    color: white;
-    text-align: center;
-    font-weight: bolder;
+  background-color: #64144f;
+  color: white;
+  text-align: center;
+  font-weight: bolder;
 
-    font-family: "Boldonse", system-ui;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Boldonse", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .menu {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 5px;
-    display: none;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    width: 150px; /* Ancho fijo */
-    z-index: 1000; /* Asegura que aparezca sobre otros elementos */
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  display: none;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  width: 150px; /* Ancho fijo */
+  z-index: 10000; /* Asegura que aparezca sobre otros elementos */
 }
 
 .opcion {
-    padding: 8px 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-    background-color: #f9f9f9;
-    font-size: larger;
-    margin-bottom: 5px;
-    height: 30px; /* Altura fija para cada opción */
-    box-sizing: border-box;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+  font-size: larger;
+  margin-bottom: 5px;
+  height: 30px; /* Altura fija para cada opción */
+  box-sizing: border-box;
 }
 
 thead {
-    font-size: large;
-    font-weight: bolder;
+  font-size: large;
+  font-weight: bolder;
 }
 
 tbody {
-    font-size: 15px;
-    text-align: center;
-    font-weight: 600;
-    background-color: #99628A;
-    color: white;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 600;
+  background-color: #99628a;
+  color: white;
 }
 
 .sinCursar {
-    background-color: #99628A;
+  background-color: #99628a;
 }
 
 .cursando {
-    background-color: #A7C7E7;
+  background-color: #a7c7e7;
 }
 
 .regularizada {
-    background-color: #E8C78A;
+  background-color: #e8c78a;
 }
 
 .aprobada {
-    background-color: #B3D9A3;
+  background-color: #b3d9a3;
 }
 
 p {
-    font-size: 10px;
-    margin-left: 0;
-    margin-bottom: 0;
-    margin-top: 5px;
-    padding: 0;
+  font-size: 10px;
+  margin-left: 0;
+  margin-bottom: 0;
+  margin-top: 5px;
+  padding: 0;
 }
 
 hr {
-    border: 0;
-    height: 1px;
-    background-color: white;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  border: 0;
+  height: 1px;
+  background-color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 abbr {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 h2 {
-    font-size: medium;
-    margin-bottom: 0;
-    font-weight: bolder;
+  font-size: medium;
+  margin-bottom: 0;
+  font-weight: bolder;
 }
 
-#contadorApro, #contadorRegu {
-    font-size: medium;
-    margin-top: 0;
+#contadorApro,
+#contadorRegu {
+  font-size: medium;
+  margin-top: 0;
+}
+
+/* Estilos para el modal de electivas */
+/* Modal de electivas */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal table { 
+    width: 100%;
+    height: 10vh; /* eliminar 100vh */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    width: 85%; 
+    max-width: 1250px;
+    max-height: 85%; 
+    overflow-x: auto;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Tabla dentro del modal */
+.modal-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.modal-table th {
+    background-color: #64144F;
+    color: white;
+    font-weight: bolder;
+    font-size: large;
+    height: auto;
+}
+.modal-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+    border: 1px solid #333;
+    width: 140px;  /* ancho fijo */
+    height: 140px; /* alto igual al ancho para celdas cuadradas */
+    word-wrap: break-word;
+}
+.modal-table td.sinCursar { background-color: #99628A; }
+.modal-table td.cursando   { background-color: #A7C7E7; }
+.modal-table td.regularizada { background-color: #E8C78A; }
+.modal-table td.aprobada   { background-color: #B3D9A3; }
+
+.contadores-electivas {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.contador-box {
+    flex: 1;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.contador-box h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #64144F;
+}
+
+.contador-box span {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+
+.contador-horas .horas-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+#contadorHoras {
+    font-size: 24px;
+    font-weight: bold;
+    color: #64144F;
+}
+
+/* Botones de horas */
+.btn-horas {
+    background-color: #64144F;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-horas:hover {
+    background-color: #4a0f3a;
+    transform: scale(1.1);
+}
+
+
+/* Botón de electivas */
+#btnElectivas {
+    background-color: #64144F;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#btnElectivas:hover {
+    background-color: #4a0f3a;
 }

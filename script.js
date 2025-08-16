@@ -9,6 +9,14 @@ const materias = [
     "IngSoc", "PyE", "RD", "CdD"
 ];
 
+const electivas = [
+    "Cripto", "TACS", "AECH",
+    "Ciberseg", "UXA", "GTH",
+    "IngReq", "MCEqT", "TAP",
+    "TGPC", "TyET", "TransfDig",
+    "CGV", "MICT"
+];
+
 document.addEventListener("keydown",function(event) {
     if(event.key == "Backspace") {
         localStorage.clear();
@@ -25,6 +33,10 @@ let contadorApro = JSON.parse(localStorage.getItem("contadorApro")) || setearCon
 let contadorRegu = JSON.parse(localStorage.getItem("contadorRegu")) || setearContador("contadorRegu");
 
 const listaEstados = [sinCursar, cursando, regularizadas, aprobadas]
+
+let horasTotales = parseInt(localStorage.getItem("horasTotales")) || 0;
+let contadorAproElectivas = JSON.parse(localStorage.getItem("contadorAproElectivas")) || setearContador("contadorAproElectivas");
+let contadorReguElectivas = JSON.parse(localStorage.getItem("contadorReguElectivas")) || setearContador("contadorReguElectivas");
 
 function setearLista(lista, nombre) {
     localStorage.setItem(nombre, JSON.stringify(lista));
@@ -51,7 +63,12 @@ function modificarTablas(materia, estado, nombreEstado) {
 }
 
 function manejarCambioEstados(celda, estadoNuevo, estados) {
-    modificarContador(celda, estadoNuevo);
+    if(!esElectiva(celda.id)) {
+        modificarContador(celda, estadoNuevo);
+    } else {
+        modificarContadorElectiva(celda, estadoNuevo);
+    }
+
     if(estadoNuevo != "sinCursar" ) {
         if(puedeCursarla(celda.id, estadoNuevo)) {
             celda.className = estadoNuevo;
@@ -63,6 +80,10 @@ function manejarCambioEstados(celda, estadoNuevo, estados) {
         modificarCorrelativas(celda.id, estadoNuevo);
         modificarTablas(celda.id, estados, estadoNuevo);
     }
+}
+
+function esElectiva(materia) {
+    return electivas.includes(materia);
 }
 
 function modificarCorrelativas(nombreMateria, estadoNuevo) {
@@ -189,7 +210,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const contadorReguEl = document.getElementById("contadorRegu");
         contadorReguEl.textContent = contadorRegu + " / 38";
 
-        // Crear el menú contextual
+        const contadorAproElectivasEl = document.getElementById("contadorElectivasApro");
+        contadorAproElectivasEl.textContent = contadorAproElectivas;
+
+        const contadorReguElectivasEl = document.getElementById("contadorElectivasRegu");
+        contadorReguElectivasEl.textContent = contadorReguElectivas;
+
+        const horasElectivasEl = document.getElementById("contadorHoras");
+        horasElectivasEl.textContent = horasTotales + " hs";
+
+        // Crear el menu contextual
         const menu = document.createElement("div");
         menu.classList.add("menu");
         document.body.appendChild(menu);
@@ -217,6 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Manejar clic derecho en celdas
         document.querySelectorAll("td").forEach(materia => {
+
             materia.addEventListener("contextmenu", function (event) {
                 // Verificar si es celda no deseada
                 if (materia.id === "vacia") {
@@ -260,3 +291,59 @@ document.addEventListener("DOMContentLoaded", function () {
         
     }, 100);
 });
+
+function abrirModalElectivas() {
+    const modal = document.getElementById("modalElectivas");
+    modal.style.display = "flex";
+}
+
+function cerrarModalElectivas() {
+    const modal = document.getElementById("modalElectivas");
+    modal.style.display = "none";
+}
+
+window.addEventListener("click", function(event) {
+    const modal = document.getElementById("modalElectivas");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+
+function modificarContadorElectiva(celda, estadoNuevo) {
+    if(celda.className == estadoNuevo) {
+        return;
+    }
+
+    if(celda.className == "aprobada") {
+        contadorAproElectivas -= 1;
+        if(estadoNuevo != "regularizada") {
+            contadorReguElectivas -= 1;
+        }
+    } else if(celda.className == "regularizada") {
+        if(estadoNuevo == "aprobada") {
+            contadorAproElectivas += 1;
+        } else {
+            contadorReguElectivas -= 1;
+        }
+    } else if(estadoNuevo == "regularizada") {
+        contadorReguElectivas += 1;
+    } else if(estadoNuevo == "aprobada") {
+        contadorAproElectivas += 1;
+        contadorReguElectivas += 1;  
+    }
+
+    localStorage.setItem("contadorReguElectivas", contadorReguElectivas);
+    const contadorElectivasRegu = document.getElementById("contadorElectivasRegu");
+    contadorElectivasRegu.textContent = contadorReguElectivas;
+
+    const contadorElectivasApro = document.getElementById("contadorElectivasApro");
+    localStorage.setItem("contadorAproElectivas", contadorAproElectivas);
+    contadorElectivasApro.textContent = contadorAproElectivas;
+}
+
+function modificarHora(cant) {
+    horasTotales += cant;
+    localStorage.setItem("horasTotales", horasTotales);
+    const horasTotalesEl = document.getElementById("contadorHoras");
+    horasTotalesEl.textContent = horasTotales + " hs";
+}
