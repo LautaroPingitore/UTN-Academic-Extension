@@ -290,7 +290,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const btnElectivas = document.getElementById("btnElectivas")
-        const modalElectivas = document.getElementById("modalElectivas");
 
         btnElectivas.addEventListener("click", abrirModalElectivas);
 
@@ -353,6 +352,7 @@ function modificarContadorElectiva(celda, estadoNuevo) {
 }
 
 function modificarHora(cant) {
+    if(horasTotales == 0 && cant == -1) return
     horasTotales += cant;
     localStorage.setItem("horasTotales", horasTotales);
     const horasTotalesEl = document.getElementById("contadorHoras");
