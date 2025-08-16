@@ -288,6 +288,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 menu.style.display = "none";
             }
         });
+
+        const btnElectivas = document.getElementById("btnElectivas")
+        const modalElectivas = document.getElementById("modalElectivas");
+
+        btnElectivas.addEventListener("click", abrirModalElectivas);
+
+        const btnSubir = document.getElementById("btnSubirHoras");
+        const btnBajar = document.getElementById("btnBajarHoras");
+
+        btnSubir.addEventListener("click", () => modificarHora(1));
+        btnBajar.addEventListener("click", () => modificarHora(-1));
         
     }, 100);
 });

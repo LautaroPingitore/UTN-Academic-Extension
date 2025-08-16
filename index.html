@@ -12,7 +12,6 @@
     <link rel="icon" href="icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="style.css" type="text/css" />
 
-    <script src="script.js"></script>
   </head>
 
   <body>
@@ -549,7 +548,7 @@
             <p id="contadorApro"></p>
             <h2>Materias Regularizadas</h2>
             <p id="contadorRegu"></p>
-            <button id="btnElectivas" onclick="abrirModalElectivas()">Ver Electivas</button>
+            <button id="btnElectivas">Ver Electivas</button>
           </td>
         </tr>
 
@@ -645,9 +644,9 @@
                 <div class="contador-box contador-horas">
                     <h3>Horas Totales</h3>
                     <div class="horas-control">
-                        <button id="btnBajarHoras" class="btn-horas" onclick="modificarHora(-1)">-</button>
+                        <button id="btnBajarHoras" class="btn-horas">-</button>
                         <span id="contadorHoras">0 hs</span>
-                        <button id="btnSubirHoras" class="btn-horas" onclick="modificarHora(1)">+</button>
+                        <button id="btnSubirHoras" class="btn-horas">+</button>
                     </div>
                 </div>
             </div>
@@ -655,5 +654,6 @@
         </div>
     </div>
     
+    <script src="script.js"></script>
   </body>
 </html>
