@@ -64,7 +64,7 @@ function modificarTablas(materia, estado, nombreEstado) {
 
 function manejarCambioEstados(celda, estadoNuevo, estados) {
     if(!esElectiva(celda.id)) {
-        modificarContador(celda, estadoNuevo);
+        if(puedeCursarla(celda.id, estadoNuevo)) modificarContador(celda, estadoNuevo);
     } else {
         modificarContadorElectiva(celda, estadoNuevo);
     }
