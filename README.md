@@ -14,7 +14,7 @@ La extensión incluye un **modal interactivo** donde se muestran:
 
 1. Descargar o clonar este repositorio en tu PC:  
    ```bash
-   git clone https://github.com/tu-usuario/utn-gestor-materias.git
+   git clone https://github.com/LautaroPingitore/UTN-Academic-Extension.git
 
 2. Abrir Google Chrome y acceder a administrar extensiones
 
